@@ -16,6 +16,7 @@ from tornado import ioloop, web, options, httpserver
 from config import settings
 from lib.utils.logger_utils import logger
 from schedules import scheduler
+from schedules import *
 from views.webhook import WebHookHandler
 
 options.define('port', default=8080, type=int)

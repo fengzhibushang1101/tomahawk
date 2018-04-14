@@ -9,6 +9,7 @@
 
 from lib.sql.base import metadata, db
 from lib.sql.user import User
+from lib.sql.scheduler import Scheduler
 
 
 class CreateTables(object):

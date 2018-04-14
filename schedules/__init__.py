@@ -13,16 +13,6 @@ from apscheduler.schedulers.tornado import TornadoScheduler
 
 from config import settings
 
-import datetime
-
-from lib.utils.logger_utils import logger
-
-
-def print_datetime():
-    print datetime.datetime.now()
-    logger.info(datetime.datetime.now())
-
-
 executors = {
     'default': ThreadPoolExecutor(20),
     'processpool': ProcessPoolExecutor(5)
@@ -42,4 +32,5 @@ jobstores = {
 }
 
 scheduler = TornadoScheduler(jobstores=jobstores, executors=executors, job_defaults=job_defaults)
+print scheduler._jobstore
 
