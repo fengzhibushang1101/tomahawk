@@ -14,6 +14,7 @@ CANCELLED = "999"
 ACTIVE = "100"
 RUNNING = "150"
 ERROR = "200"
+END = "300"
 
 
 class Scheduler(Base):

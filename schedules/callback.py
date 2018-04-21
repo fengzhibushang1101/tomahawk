@@ -8,13 +8,24 @@
 """
 import requests
 
-from lib.sql.scheduler import Scheduler, RUNNING, ACTIVE, ERROR
+from lib.sql.scheduler import Scheduler, ACTIVE, ERROR, END
 from lib.sql.session import sessionCM
 from lib.utils.logger_utils import logger
 from schedules import scheduler
 
 
 def aps_callback(req_type, url, data, job_id, other_kwargs=None, retry=1):
+    """
+    scheduler回调函数
+    TODO: 添加调用记录
+    :param req_type: 请求方式 post|get
+    :param url: 请求地址
+    :param data: 请求数据
+    :param job_id: 在任务队列中的id
+    :param other_kwargs: 其他
+    :param retry: 重试次数
+    :return:
+    """
     with sessionCM() as session:
         sched = Scheduler.find_by_scheduler_id(session, job_id)
         job = scheduler.get_job(job_id)
@@ -29,7 +40,8 @@ def aps_callback(req_type, url, data, job_id, other_kwargs=None, retry=1):
                 res = requests.get(url=url, params=data)
             res = res.json()
             if res["status"]:
-                sched.update(session, **{"status": ACTIVE, "next_run_time": next_run_time})
+                sched.update(session,
+                             **{"status": ACTIVE if sched.trigger != "date" else END, "next_run_time": next_run_time})
             else:
                 sched.update(session,
                              **{"status": ERROR, "err_mess": res["message"], "next_run_time": next_run_time})
