@@ -9,10 +9,10 @@
 import datetime
 
 from lib.utils.logger_utils import logger
-from schedules import scheduler
+# from schedules import scheduler
 
 
-@scheduler.scheduled_job('interval', seconds=5)
+# @scheduler.scheduled_job('interval', seconds=5)
 def print_datetime():
     print datetime.datetime.now()
     logger.info(datetime.datetime.now())

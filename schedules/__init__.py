@@ -10,8 +10,10 @@
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 from apscheduler.schedulers.tornado import TornadoScheduler
+from apscheduler.schedulers.blocking import BlockingScheduler
 
-from config import settings
+from lib.sql.base import db
+from schedules.print_datetime import print_datetime
 
 executors = {
     'default': ThreadPoolExecutor(20),
@@ -24,13 +26,11 @@ job_defaults = {
     'misfire_grace_time': 60 * 60 * 20,
 }
 
-db_info = settings.db
 
 jobstores = {
-    "default": SQLAlchemyJobStore(url="mysql://%s:%s@%s/%s" % (
-    db_info["user"], db_info["password"], db_info["host"], db_info["db_name"]))
+    "default": SQLAlchemyJobStore(engine=db),
+    "extra": SQLAlchemyJobStore(engine=db, tablename='extra_jobs'),
 }
 
 scheduler = TornadoScheduler(jobstores=jobstores, executors=executors, job_defaults=job_defaults)
-print scheduler._jobstore
 

@@ -15,8 +15,8 @@ from tornado import ioloop, web, options, httpserver
 
 from config import settings
 from lib.utils.logger_utils import logger
-from schedules import scheduler
-from schedules import *
+from schedules.my_scheduler import my_scheduler
+from schedules.sys_schedules import sys_schedules
 from views.webhook import WebHookHandler
 
 options.define('port', default=8080, type=int)
@@ -58,7 +58,9 @@ def main():
         server.listen(settings.port)
         print "the server is going to start..."
         print "http://localhost:%s/" % options.options.port
-        scheduler.start()
+        my_scheduler.start()
+        for sched in sys_schedules:
+            my_scheduler.add_my_job(*sched)
         ioloop.IOLoop().instance().start()
     except Exception, e:
         print traceback.format_exc(e)
