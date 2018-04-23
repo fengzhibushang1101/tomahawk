@@ -9,5 +9,5 @@
 
 
 sys_schedules = [
-    ["cron", "post", "http://180.76.98.136/api/jx3/info", "get_jx3_info", "get_jx3_info", {"hour": 3}, 'sys', {}]
+    ["cron", "post", "http://www.kisu.top/api/jx3/info", "get_jx3_info", "get_jx3_info", {"hour": 3}, 'sys', {}]
 ]
